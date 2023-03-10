@@ -77,12 +77,12 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
     case 'SORT_BY_AMOUNT':
       return {
         ...state,
-        sortBy: 'amount' 
+        sortBy: 'amount'
       };
     case 'SORT_BY_DATE':
       return {
         ...state,
-        sortBy: 'date' 
+        sortBy: 'date'
       }
     default:
       return state;
@@ -125,25 +125,52 @@ const store = createStore(
   })
 );
 
-const unsub = store.subscribe(() =>
-  console.log(store.getState())
-);
+const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+  return expenses.filter(expense => {
+    const startDateMatch = typeof startDate !== 'number' || expense.createdAt > startDate;
+    const endDateMatch = typeof endDate !== 'number' || expense.createdAt < endDate;
+    const textMatch = typeof text !== 'string' || expense.description.toLowerCase().includes(text.toLowerCase());
+
+    return startDateMatch && endDateMatch && textMatch;
+  });
+};
+
+const unsub = store.subscribe(() => {
+  const state = store.getState();
+  const visibleExpenses =
+    getVisibleExpenses(state.expenses, state.filters);
+  console.log(visibleExpenses);
+});
+
 const ids = [];
-ids.push(
-  store.dispatch(addExpense({
-    description: 'Big Burgi',
-    amount: 500
-  })).expense.id);
-ids.push(store.dispatch(addExpense({
+const createExpense = (expense = {}) =>
+  ids.push(store.dispatch(addExpense(expense)).expense.id);
+
+createExpense({
+  description: 'Big Burgi',
+  amount: 500,
+  createdAt: 200
+});
+createExpense({
   description: 'Small Burgi',
-  amount: 400
-})).expense.id);
+  amount: 400,
+  createdAt: 300
+});
+createExpense({
+  description: 'Medium Burgi',
+  amount: 450,
+  createdAt: 400
+});
+createExpense({
+  description: 'Medium Coffee',
+  amount: 250,
+  createdAt: 500
+});
 
 // store.dispatch(removeExpense({ id: ids[0] }));
 // store.dispatch(editExpense(ids[1], { amount: 600 }));
-// store.dispatch(setTextFilter('Burgi'));
 // store.dispatch(sortByAmount());
 // store.dispatch(sortByDate());
-store.dispatch(setStartDate(125));
-store.dispatch(setStartDate());
-store.dispatch(setEndDate(700));
+store.dispatch(setStartDate(250));
+store.dispatch(setEndDate(750));
+store.dispatch(setTextFilter('burgi'))
