@@ -74,16 +74,6 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
           ...expense,
           ...action.expense
         } : expense);
-    case 'SORT_BY_AMOUNT':
-      return {
-        ...state,
-        sortBy: 'amount'
-      };
-    case 'SORT_BY_DATE':
-      return {
-        ...state,
-        sortBy: 'date'
-      }
     default:
       return state;
   }
@@ -113,6 +103,16 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
         ...state,
         endDate: action.date,
       };
+    case 'SORT_BY_AMOUNT':
+      return {
+        ...state,
+        sortBy: 'amount'
+      };
+    case 'SORT_BY_DATE':
+      return {
+        ...state,
+        sortBy: 'date'
+      }
     default:
       return state;
   }
@@ -132,6 +132,11 @@ const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
     const textMatch = typeof text !== 'string' || expense.description.toLowerCase().includes(text.toLowerCase());
 
     return startDateMatch && endDateMatch && textMatch;
+  }).sort((a, b) => {
+    if (sortBy === 'date') {
+      return b.createdAt - a.createdAt;
+    }  //if (sortBy === 'amount') {
+    return b.amount - a.amount
   });
 };
 
@@ -169,8 +174,8 @@ createExpense({
 
 // store.dispatch(removeExpense({ id: ids[0] }));
 // store.dispatch(editExpense(ids[1], { amount: 600 }));
-// store.dispatch(sortByAmount());
-// store.dispatch(sortByDate());
-store.dispatch(setStartDate(250));
-store.dispatch(setEndDate(750));
-store.dispatch(setTextFilter('burgi'))
+store.dispatch(sortByAmount());
+store.dispatch(sortByDate());
+//store.dispatch(setStartDate(250));
+//store.dispatch(setEndDate(750));
+//store.dispatch(setTextFilter('burgi'))
