@@ -118,6 +118,7 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
   }
 };
 
+// Create Store
 const store = createStore(
   combineReducers({
     expenses: expensesReducer,
@@ -130,7 +131,6 @@ const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
     const startDateMatch = typeof startDate !== 'number' || expense.createdAt > startDate;
     const endDateMatch = typeof endDate !== 'number' || expense.createdAt < endDate;
     const textMatch = typeof text !== 'string' || expense.description.toLowerCase().includes(text.toLowerCase());
-
     return startDateMatch && endDateMatch && textMatch;
   }).sort((a, b) => {
     if (sortBy === 'date') {
