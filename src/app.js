@@ -14,30 +14,27 @@ const expenses = [
   {
     description: 'Water bill',
     note: 'May',
-    amount: 100,
-    createdAt: 1000
+    amount: 500,
+    createdAt: 2000
   }, {
     description: 'Gas bill',
     note: 'May',
-    amount: 200,
-    createdAt: 2000
+    amount: 600,
+    createdAt: 1000
   }, {
     description: 'Gas oven',
     note: 'May',
-    amount: 5000,
-    createdAt: 4000
+    amount: 2000,
+    createdAt: 9000
   }, {
     description: 'Eletric bill',
     note: 'May',
-    amount: 300,
+    amount: 700,
     createdAt: 3000
   }
 ].map(expense => store.dispatch(addExpense(expense)));
 
-
-store.dispatch(setTextFilter('gas'));
-
-setTimeout(() => store.dispatch(setTextFilter('bill')), 4000);
+store.dispatch(setTextFilter(''));
 
 const jsx = (
   <Provider store={store}>
