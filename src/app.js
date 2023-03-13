@@ -24,7 +24,7 @@ const expenses = [
   }, {
     description: 'Gas oven',
     note: 'May',
-    amount: 2000,
+    amount: 100,
     createdAt: 9000
   }, {
     description: 'Eletric bill',
@@ -33,8 +33,6 @@ const expenses = [
     createdAt: 3000
   }
 ].map(expense => store.dispatch(addExpense(expense)));
-
-store.dispatch(setTextFilter(''));
 
 const jsx = (
   <Provider store={store}>
